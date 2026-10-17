@@ -25,4 +25,27 @@ case 'ledger':if(!state.ledger){state.ledger=true;add('Route Code');say('Vincent
 function start(){document.getElementById('intro').classList.add('hidden');render();say('Vincent Vale','“Dead or alive, I have never liked train stations. First things first: find out why the 12:07 never came.”')}
 function resetGame(){location.reload()}
 render();
+</script><style>
+#vincent{position:absolute;left:40%;top:78%;width:clamp(39px,7.5vw,70px);height:clamp(80px,15vw,142px);z-index:3;pointer-events:none;transform:translate(-50%,-100%);filter:drop-shadow(2px 7px 5px #000b);transition:opacity .25s}
+#vincent.walking .legs{animation:stride .24s ease-in-out infinite alternate;transform-origin:50% 72%}#vincent.walking .body{animation:bob .24s ease-in-out infinite alternate}
+@keyframes stride{from{transform:skewX(-12deg)}to{transform:skewX(12deg)}}@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+#footstep{position:absolute;z-index:4;pointer-events:none;border:2px solid #ffd48a;border-radius:50%;width:28px;height:12px;transform:translate(-50%,-50%);opacity:0}#footstep.pulse{animation:footpulse .5s ease-out}@keyframes footpulse{0%{opacity:1;scale:.6}100%{opacity:0;scale:1.8}}
+#walkhint{font-size:12px;color:#f0c88e;text-align:center;background:#1b1721;padding:6px}#scene{touch-action:manipulation}#hotspots{position:absolute;inset:0;pointer-events:none}#hotspots button{pointer-events:auto}
+@media(prefers-reduced-motion:reduce){#vincent.walking .legs,#vincent.walking .body{animation:none}}
+</style><script>
+// Version 3 movement layer: preserves all Chapter I story and puzzle state.
+(()=>{
+const sceneEl=document.getElementById('scene');
+const avatar=document.createElement('div');avatar.id='vincent';avatar.setAttribute('aria-label','Vincent Vale, skeletal detective');
+avatar.innerHTML=`<svg viewBox="0 0 90 175" width="100%" height="100%" aria-hidden="true"><ellipse cx="45" cy="170" rx="30" ry="5" fill="#09050a" opacity=".55"/><g class="legs"><path d="M33 118 L31 155 L22 162 L40 164 L46 124 M52 118 L57 154 L49 162 L69 164 L65 119" fill="#26212e" stroke="#100d18" stroke-width="5" stroke-linejoin="round"/></g><g class="body"><path d="M26 73 L14 125 L33 134 L58 134 L77 124 L64 74 Z" fill="#493744" stroke="#17121c" stroke-width="3"/><path d="M38 74 L45 121 L53 74" fill="#e7d4b5"/><path d="M45 80 L40 92 L46 117 L51 92 Z" fill="#b34e42"/><path d="M27 80 L12 119 L21 124 L36 94 M63 80 L78 118 L68 125 L55 94" fill="#45333e" stroke="#17121c" stroke-width="3"/><path d="M24 80 L32 101 L39 80 M66 80 L57 101 L51 80" fill="#6c5561"/><path d="M25 38 Q19 8 45 8 Q71 8 66 38 L65 57 Q60 72 45 73 Q29 72 25 57Z" fill="#e8dbb7" stroke="#463543" stroke-width="3"/><ellipse cx="34" cy="43" rx="8" ry="10" fill="#201923"/><ellipse cx="55" cy="43" rx="8" ry="10" fill="#201923"/><path d="M45 49 L40 58 L49 58 Z" fill="#251d27"/><path d="M32 62 Q45 70 58 62 M36 64 L36 68 M43 65 L43 70 M51 65 L51 69" fill="none" stroke="#57444a" stroke-width="2"/><path d="M19 28 L71 28 L65 21 L26 21Z" fill="#28212b"/><path d="M29 20 L32 2 L60 2 L63 20Z" fill="#332833"/><path d="M30 19 L62 19" stroke="#c6a06b" stroke-width="3"/></g></svg>`;
+sceneEl.appendChild(avatar);const ring=document.createElement('div');ring.id='footstep';sceneEl.appendChild(ring);
+const hint=document.createElement('div');hint.id='walkhint';hint.textContent='Tap anywhere to walk · Tap a label to interact';sceneEl.insertAdjacentElement('afterend',hint);
+document.querySelector('.footer').textContent='The Last Stop · Version 3.0 · Tap to walk and explore';
+let pos={x:40,y:78},frame=0,token=0,queued=null;
+function place(){avatar.style.left=pos.x+'%';avatar.style.top=pos.y+'%';avatar.style.zIndex=String(3+Math.round(pos.y/10));const scale=.72+(pos.y/100)*.45;avatar.style.transform=`translate(-50%,-100%) scale(${scale})`}
+function move(x,y,done){cancelAnimationFrame(frame);const my=++token;const start={...pos};const end={x:Math.max(9,Math.min(91,x)),y:Math.max(52,Math.min(92,y))};const distance=Math.hypot(end.x-start.x,end.y-start.y);const duration=Math.max(240,Math.min(1700,distance*30));let t0=null;avatar.classList.add('walking');avatar.style.scale=end.x<start.x?'-1 1':'1 1';ring.style.left=end.x+'%';ring.style.top=end.y+'%';ring.classList.remove('pulse');void ring.offsetWidth;ring.classList.add('pulse');function tick(now){if(my!==token)return;if(t0===null)t0=now;const t=Math.min(1,(now-t0)/duration);pos.x=start.x+(end.x-start.x)*t;pos.y=start.y+(end.y-start.y)*t;place();if(t<1)frame=requestAnimationFrame(tick);else{avatar.classList.remove('walking');if(done)done()}}frame=requestAnimationFrame(tick)}
+const originalRender=render;render=function(){originalRender();pos={x:40,y:78};avatar.style.scale='1 1';place();document.querySelectorAll('.hot').forEach((b,i)=>{const [label,x,y,id]=scenes[state.scene].hot[i];b.onclick=(ev)=>{ev.stopPropagation();move(x,y+9,()=>{const previous=state.scene;interact(id);if(state.scene!==previous){pos={x:42,y:82};place()}})}})};
+sceneEl.addEventListener('click',e=>{if(!document.getElementById('intro').classList.contains('hidden'))return;if(e.target.closest('button'))return;const rect=sceneEl.getBoundingClientRect();move((e.clientX-rect.left)/rect.width*100,(e.clientY-rect.top)/rect.height*100)});
+place();render();
+})();
 </script></body></html>
