@@ -162,7 +162,7 @@ function skeleton(x,z,coat,hat=false,scale=1,noir=false){
    for(let i=0;i<(noir?0:5);i++){const a=i*Math.PI*2/(noir?3:5);ball(head,noir?.025:.037,wine,side*.22+Math.cos(a)*.26,.25+Math.sin(a)*.26,.375);}
    if(!noir){const curl=ball(head,.08,teal,side*.41,-.02,.31);curl.scale.set(.8,.55,.3);}
  }
- let nose=add(head,new THREE.ConeGeometry(.115,.2,3),ink,0,.015,.46);sculptedNose.rotation.x=Math.PI;
+ let nose=add(head,new THREE.ConeGeometry(.115,.2,3),ink,0,.015,.46);nose.rotation.x=Math.PI;
  for(let i=-3;i<=3;i++)bx(head,.055,.13,.026,ink,i*.082,-.27,.365);
  // Ornamental forehead flower and filigree
  if(!noir){ball(head,.10,wine,0,.56,.35);for(let i=0;i<6;i++){let a=i*Math.PI/3;ball(head,.055,gold,Math.cos(a)*.13,.56+Math.sin(a)*.13,.34)}}else{for(const side of [-1,1]){let brow=bx(head,.29,.045,.065,ink,side*.17,.48,.37);brow.rotation.z=side*-.13;}ball(head,.035,gold,0,.57,.35);}
@@ -177,8 +177,8 @@ function skeleton(x,z,coat,hat=false,scale=1,noir=false){
  // Cigar held at the corner of his mouth; no copyrighted character likeness.
  let cigar=rod(head,.028,.032,.31,mat(0x765038),.31,-.20,.43);cigar.rotation.z=-1.18;cigar.rotation.x=.19;
  let tip=ball(head,.032,ember,.45,-.12,.47);tip.scale.set(.7,.65,.7);
- const smoke=[];for(let i=0;i<4;i++){const puff=ball(head,.045,mat(0x89949b),.48+i*.055,.02+i*.16,.48);puff.material.transparent=true;puff.material.opacity=.27-i*.045;newSmoke.push(puff)}
- g.userData.smoke=newSmoke;
+ const smoke=[];for(let i=0;i<4;i++){const puff=ball(head,.045,mat(0x89949b),.48+i*.055,.02+i*.16,.48);puff.material.transparent=true;puff.material.opacity=.27-i*.045;smoke.push(puff)}
+ g.userData.smoke=smoke;
  }
   if(noir){
     // Vincent Vale: warm brown tailored detective silhouette and expressive calavera face.
@@ -211,13 +211,13 @@ function skeleton(x,z,coat,hat=false,scale=1,noir=false){
     // Rebuild the face as a distinct elongated, sculptural calavera rather than stacked toy spheres.
     while(head.children.length){const child=head.children[0];head.remove(child);}
     const porcelain=mat(0xe7d6b6,0,.88),shadowInk=mat(0x211a1b),ornament=mat(0x624138),felt=mat(0xa68b64,0,.96);
-    const face=ball(head,.5,porcelain,0,.17,0);face.scale.set(.81,1.27,.72);
-    const muzzle=ball(head,.31,porcelain,0,-.30,.11);muzzle.scale.set(.77,1.17,.70);
+    const face=ball(head,.5,porcelain,0,.17,0);face.scale.set(.82,1.33,.73);
+    const muzzle=ball(head,.31,porcelain,0,-.30,.11);muzzle.scale.set(.76,1.17,.70);
     const sculptedChin=ball(head,.19,porcelain,0,-.59,.12);sculptedChin.scale.set(.82,.88,.75);
     for(const side of [-1,1]){
       const socket=ball(head,.17,shadowInk,side*.185,.22,.344);socket.scale.set(.87,1.28,.28);
-      const eye=ball(head,.073,mat(0x928779),side*.185,.18,.394);eye.scale.set(1,.56,.25);
-      const upper=ball(head,.17,porcelain,side*.185,.355,.36);upper.scale.set(1,.34,.32);
+      const eye=ball(head,.073,mat(0x928779),side*.185,.18,.394);eye.scale.set(1,.45,.25);
+      const upper=ball(head,.17,porcelain,side*.185,.355,.36);upper.scale.set(1,.48,.38);
       const brow=ball(head,.11,shadowInk,side*.185,.46,.345);brow.scale.set(1.55,.16,.23);brow.rotation.z=side*.20;
       const cheek=ball(head,.19,porcelain,side*.295,-.11,.15);cheek.scale.set(.62,.38,.72);
       for(let i=0;i<3;i++){const curl=ball(head,.019,ornament,side*(.30+i*.035),.46+i*.035,.27-i*.015);curl.scale.set(1,1,.4)}
@@ -236,9 +236,31 @@ function skeleton(x,z,coat,hat=false,scale=1,noir=false){
     // Slim, elongated suit silhouette and more visible shirt front.
     bx(g,.29,.72,.07,cream,0,2.08,.53);
     bx(g,.11,.57,.09,wineTie,0,2.11,.61);
-    // Keep articulated subgroups for secondary body movement.
-    const torso=new THREE.Group();torso.position.y=1.72;g.add(torso);
+    // Hierarchical rig: pelvis, flexible upper body, independently bending knees.
+    const torso=new THREE.Group();torso.position.set(0,1.45,0);g.add(torso);
+    for(const part of [...g.children]){
+      if(part===torso || part===limbs.legs[0] || part===limbs.legs[1])continue;
+      if(part.position.y>1.45 || part===head){g.remove(part);part.position.y-=1.45;torso.add(part);}
+    }
+    // Upper body turns and sways independently from the hips.
     g.userData.torso=torso;
+    const knees=[];
+    for(const leg of limbs.legs){
+      // Replace rigid lower leg and boot with a shin group pivoted at the knee.
+      const knee=new THREE.Group();knee.position.set(0,-.77,0);leg.add(knee);
+      for(const part of [...leg.children]){
+        if(part===knee)continue;
+        if(part.position.y < -.82){leg.remove(part);part.position.y+=.77;knee.add(part);}
+      }
+      knees.push(knee);
+    }
+    limbs.knees=knees;
+    // A softer tapered jacket overlay helps avoid the block-like nutcracker silhouette.
+    const coatShape=add(torso,new THREE.CylinderGeometry(.37,.49,1.18,12,1),cocoa,0,.43,-.065);
+    coatShape.scale.z=.76;
+    const vest=add(torso,new THREE.CylinderGeometry(.23,.32,.85,10),darkCocoa,0,.58,.28);vest.scale.z=.55;
+    // A gentle, asymmetrical posture even when Vincent stands still.
+    torso.rotation.z=-.025;
   }
   g.userData.limbs=limbs;return g;
 }
@@ -294,7 +316,20 @@ l.legs[0].rotation.z=.025*b;l.legs[1].rotation.z=-.025*b;
 l.arms[0].rotation.x=(-sw*.32-.10)*b;l.arms[1].rotation.x=(sw*.32-.10)*b;
 l.arms[0].rotation.z=-.09;l.arms[1].rotation.z=.09;
 l.head.rotation.z=Math.sin(t*.0014)*.025+sw*.015*b;
-l.head.rotation.x=.055+Math.sin(phase*2)*.014*b;}
+l.head.rotation.x=.035+Math.sin(phase*2)*.027*b;
+if(l.knees){
+  // Swing phase flexion: the trailing foot lifts, while the planted knee stays soft.
+  l.knees[0].rotation.x=Math.max(0,-sw)*.83*b+.07*b;
+  l.knees[1].rotation.x=Math.max(0,sw)*.83*b+.07*b;
+}
+if(vincent.userData.torso){
+ const upper=vincent.userData.torso;
+ upper.rotation.y=Math.sin(phase)*.065*b+Math.sin(t*.00048)*.013;
+ upper.rotation.z=-.025+Math.sin(phase)*.042*b;
+ upper.rotation.x=.065+Math.cos(phase*2)*.024*b;
+ upper.position.y=1.45+Math.sin(phase*2)*.018*b;
+}
+}
 vincent.rotation.z=Math.sin(phase)*.019*b;
 if(vincent.userData.smoke)vincent.userData.smoke.forEach((p,i)=>{p.position.y=.02+i*.16+Math.sin(t*.0018+i)*.045;p.scale.setScalar(1+Math.sin(t*.001+i)*.12)});const a=angles[angle];const forward=new THREE.Vector3(Math.sin(vincent.rotation.y),0,Math.cos(vincent.rotation.y));
 // Cinematic third-person framing: Vincent stays large in the foreground while the hall remains visible.
