@@ -1,15 +1,15 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#101720"><title>The Last Stop — Midnight Terminal 3D</title><style>*{box-sizing:border-box}body{margin:0;background:#090e17;color:#f8e7c1;font-family:Georgia,serif;overflow:hidden}canvas{display:block;touch-action:none}#hud{position:fixed;top:0;left:0;right:0;padding:15px 18px;background:linear-gradient(#080d16dc,transparent);pointer-events:none}#title{font-size:19px;letter-spacing:3px;color:#f4d494}#subtitle{font:11px system-ui;letter-spacing:2px;color:#d6b989;margin-top:4px}#top{position:fixed;top:12px;right:12px;display:flex;gap:8px}button{border:1px solid #caa765;background:#172330e8;color:#f5dfaf;padding:10px 13px;border-radius:8px;font:13px system-ui;cursor:pointer}#dialog{position:fixed;bottom:16px;left:12px;right:12px;max-width:650px;margin:auto;background:#101b28ed;border:1px solid #a78752;border-radius:13px;padding:16px;display:none;box-shadow:0 15px 50px #000b}#speaker{color:#edc477;letter-spacing:2px;font:12px system-ui;margin-bottom:8px}#words{font-size:17px;line-height:1.45}#choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}#choices button{background:#2b3541}#hint{position:fixed;bottom:16px;left:10px;right:10px;text-align:center;font:12px system-ui;color:#e8d7b4;text-shadow:0 2px 5px black;pointer-events:none}#toast{position:fixed;top:82px;left:50%;transform:translateX(-50%);background:#1b2a37ed;border:1px solid #b69560;border-radius:9px;padding:10px 15px;font:13px system-ui;display:none;max-width:85vw;text-align:center}#loading{position:fixed;inset:0;background:#0b111a;display:grid;place-items:center;font:18px Georgia;z-index:20;text-align:center;padding:25px}#inv{position:fixed;top:65px;right:12px;background:#111e2bed;border:1px solid #a88a5a;border-radius:9px;padding:12px;display:none;max-width:220px;font:13px system-ui}#inv div{margin-top:9px}#ending{color:#ffe19b}</style></head><body><div id="loading">Opening the gates of the Midnight Terminal…</div><div id="hud"><div id="title">THE LAST STOP</div><div id="subtitle">CHAPTER I · THE MIDNIGHT TERMINAL · VINCENT VALE · NOIR EDITION</div></div><div id="top"><button id="camera">Camera</button><button id="inventory">Inventory</button></div><div id="inv"><b>VINCENT'S POCKETS</b><div id="items">Empty</div></div><div id="toast"></div><div id="hint">Tap the floor to walk · Tap characters and objects to investigate</div><div id="dialog"><div id="speaker"></div><div id="words"></div><div id="choices"></div></div><script type="module">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#101720"><title>The Last Stop — Midnight Terminal 3D</title><style>*{box-sizing:border-box}body{margin:0;background:#090e17;color:#f8e7c1;font-family:Georgia,serif;overflow:hidden}canvas{display:block;touch-action:none}#hud{position:fixed;top:0;left:0;right:0;padding:15px 18px;background:linear-gradient(#080d16dc,transparent);pointer-events:none}#title{font-size:19px;letter-spacing:3px;color:#f4d494}#subtitle{font:11px system-ui;letter-spacing:2px;color:#d6b989;margin-top:4px}#top{position:fixed;top:12px;right:12px;display:flex;gap:8px}button{border:1px solid #caa765;background:#172330e8;color:#f5dfaf;padding:10px 13px;border-radius:8px;font:13px system-ui;cursor:pointer}#dialog{position:fixed;bottom:16px;left:12px;right:12px;max-width:650px;margin:auto;background:#101b28ed;border:1px solid #a78752;border-radius:13px;padding:16px;display:none;box-shadow:0 15px 50px #000b}#speaker{color:#edc477;letter-spacing:2px;font:12px system-ui;margin-bottom:8px}#words{font-size:17px;line-height:1.45}#choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}#choices button{background:#2b3541}#hint{position:fixed;bottom:16px;left:10px;right:10px;text-align:center;font:12px system-ui;color:#e8d7b4;text-shadow:0 2px 5px black;pointer-events:none}#toast{position:fixed;top:82px;left:50%;transform:translateX(-50%);background:#1b2a37ed;border:1px solid #b69560;border-radius:9px;padding:10px 15px;font:13px system-ui;display:none;max-width:85vw;text-align:center}#loading{position:fixed;inset:0;background:#0b111a;display:grid;place-items:center;font:18px Georgia;z-index:20;text-align:center;padding:25px}#inv{position:fixed;top:65px;right:12px;background:#111e2bed;border:1px solid #a88a5a;border-radius:9px;padding:12px;display:none;max-width:220px;font:13px system-ui}#inv div{margin-top:9px}#ending{color:#ffe19b}@media(max-width:700px){#hud{top:env(safe-area-inset-top);padding:8px 12px}#title{font-size:16px;letter-spacing:2px}#subtitle{font-size:9px;letter-spacing:.7px;max-width:58%;line-height:1.4}#top{top:calc(env(safe-area-inset-top) + 8px);right:8px;gap:5px}#top button{padding:8px 9px;font-size:11px}#hint{bottom:calc(env(safe-area-inset-bottom) + 12px)}} </style></head><body><div id="loading">Opening the gates of the Midnight Terminal…</div><div id="hud"><div id="title">THE LAST STOP</div><div id="subtitle">CHAPTER I · THE MIDNIGHT TERMINAL · VINCENT VALE · NOIR EDITION</div></div><div id="top"><button id="camera">Camera</button><button id="inventory">Inventory</button></div><div id="inv"><b>VINCENT'S POCKETS</b><div id="items">Empty</div></div><div id="toast"></div><div id="hint">Tap the floor to walk · Tap characters and objects to investigate</div><div id="dialog"><div id="speaker"></div><div id="words"></div><div id="choices"></div></div><script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a1422);scene.fog=new THREE.FogExp2(0x0b1724,.009);
 const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;document.body.prepend(renderer.domElement);
-const camera=new THREE.PerspectiveCamera(57,innerWidth/innerHeight,.1,180);const angles=[[0,6.8,12.8],[8,7,13],[-8,6.5,11]];let angle=0;const cameraTarget=new THREE.Vector3();
+const camera=new THREE.PerspectiveCamera(57,innerWidth/innerHeight,.1,180);const angles=[[0,4.2,6.8],[4.5,4.7,8],[-4.5,4.7,8]];let angle=0;const cameraTarget=new THREE.Vector3();
 scene.add(new THREE.HemisphereLight(0x8fb4cf,0x443321,1.8));const moon=new THREE.DirectionalLight(0x8eb8f9,2);moon.position.set(-9,20,-14);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-32;moon.shadow.camera.right=32;moon.shadow.camera.top=32;moon.shadow.camera.bottom=-32;scene.add(moon);
 const mat=(c,metal=0,rough=.75)=>new THREE.MeshStandardMaterial({color:c,metalness:metal,roughness:rough});const stone=mat(0x263848),gold=mat(0xb68a49,.55),ivory=mat(0xe4d5b2),black=mat(0x131923),red=mat(0x7c2934),green=mat(0x27817a),wood=mat(0x4b302c);const interact=[];
 function mesh(geo,m,x,y,z,shadow=true){let o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=shadow;o.receiveShadow=true;scene.add(o);return o}function box(w,h,d,m,x,y,z){return mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z)}function cyl(rt,rb,h,m,x,y,z,n=12){return mesh(new THREE.CylinderGeometry(rt,rb,h,n),m,x,y,z)}function sphere(r,m,x,y,z){return mesh(new THREE.SphereGeometry(r,16,12),m,x,y,z)}function label(t,x,y,z,size=1,color='#eacb86'){let c=document.createElement('canvas');c.width=1024;c.height=180;let q=c.getContext('2d');q.fillStyle=color;q.font='bold 70px Georgia';q.textAlign='center';q.fillText(t,512,104);let tx=new THREE.CanvasTexture(c);let s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthWrite:false}));s.position.set(x,y,z);s.scale.set(size*7,size*1.25,1);scene.add(s);return s}
 // Hall: patterned floor, columns, lofty vaults, departures gate, railway tracks
 box(46,.6,36,stone,0,-.38,0);for(let x=-22;x<=22;x+=2){for(let z=-17;z<=17;z+=2){box(1.92,.012,1.92,((x+z)/2)%2===0?mat(0x344454):mat(0x283745),x,-.065,z)}}
 for(let x of [-18,-12,12,18]){for(let z of [-12,7]){cyl(.75,.9,9,stone,x,4.5,z);cyl(1.1,1.1,.5,gold,x,9,z);cyl(1,1,.5,gold,x,.35,z);let l=new THREE.PointLight(0xffad59,13,12);l.position.set(x,7.8,z);scene.add(l);sphere(.23,mat(0xffc976),x,7.6,z)}}
-box(46,12,1.3,stone,0,5.5,-17);box(1.2,12,35,stone,-23,5.5,0);box(1.2,12,35,stone,23,5.5,0);box(46,1,35,stone,0,12,0);for(let z=-14;z<12;z+=7){box(.18,8,4,gold,-22.2,6,z);box(.18,8,4,gold,22.2,6,z)}
+box(46,12,1.3,stone,0,5.5,-17);box(1.2,12,35,stone,-23,5.5,0);box(1.2,12,35,stone,23,5.5,0);/* open roof: prevent ceiling from occluding the mobile camera */for(let z=-14;z<12;z+=7){box(.18,8,4,gold,-22.2,6,z);box(.18,8,4,gold,22.2,6,z)}
 // Grand gate
 box(15,9,1,black,0,4.5,-16.15);for(let x of [-8,8])box(.65,10,.7,gold,x,5,-15.5);box(17,.7,.9,gold,0,9.5,-15.4);label('PLATFORM  12:07',0,8.8,-14.75,1.6);for(let x=-6;x<=6;x+=3){box(.12,7,.4,gold,x,3.5,-15.6)}
 // Huge art deco clock
@@ -18,6 +18,101 @@ cyl(2.6,2.6,.45,gold,0,10.7,-16,32).rotation.x=Math.PI/2;cyl(2.22,2.22,.5,ivory,
 box(7,4,3,wood,-14,2,-5);box(7.4,.25,3.5,gold,-14,4.2,-5);label('TICKETS',-14,5.1,-3.2,.95);box(2.2,1.1,1.4,wood,7,.6,2);box(1.8,.8,1.2,red,9,.4,2.8);box(2,1.4,1.3,wood,8,1.2,2.2);for(let x of [-10,10]){cyl(.08,.08,5,gold,x,2.5,8);sphere(.48,mat(0xffd182),x,5.1,8);let lamp=new THREE.PointLight(0xffb769,8,12);lamp.position.set(x,5.1,8);scene.add(lamp)}
 // Railcar glimpsed through gate
 box(12,4.3,3.4,green,0,2,-23);box(12,.35,3.5,gold,0,4.2,-23);for(let x=-4;x<=4;x+=4){box(2.5,1.4,.1,mat(0x8ab4bd),x,2.7,-21.22)}
+
+// CINEMATIC ENVIRONMENT PASS: architectural depth, noir atmosphere and readable destinations
+const brass=mat(0xc89b55,.72,.3),deep=mat(0x111c2a),plaster=mat(0x34485a),
+      glass=new THREE.MeshStandardMaterial({color:0x4b8598,emissive:0x16384a,emissiveIntensity:.5,metalness:.35,roughness:.22}),
+      warm=new THREE.MeshBasicMaterial({color:0xffc878}),
+      inkBlue=mat(0x172938);
+function trim(w,h,d,x,y,z,m=brass){return box(w,h,d,m,x,y,z)}
+// Recessed monumental windows and golden Art Deco frames along both side walls.
+for(const side of [-1,1]){
+  const wx=side*22.25;
+  for(const z of [-11,-3,5,13]){
+    trim(.14,6.9,4.5,wx,6.4,z,deep);
+    trim(.18,5.5,3.25,wx-side*.11,6.6,z,glass);
+    for(const dz of [-1.75,1.75])trim(.25,7,.13,wx-side*.25,6.4,z+dz);
+    trim(.28,.14,3.65,wx-side*.3,4.8,z);
+    trim(.28,.14,3.65,wx-side*.3,8.5,z);
+    trim(.22,5.7,.12,wx-side*.35,6.6,z);
+    // geometric fan tracery
+    for(const dz of [-1.1,1.1])trim(.12,2.8,.1,wx-side*.37,7.2,z+dz);
+    const glow=new THREE.PointLight(0x478fb5,2.8,9);
+    glow.position.set(side*19.8,7,z);scene.add(glow);
+  }
+}
+// Vault ribs and stepped coffers give the ceiling depth rather than a plain flat box.
+for(let z=-15;z<=15;z+=5){
+  trim(44,.38,.42,0,11.1,z,brass);
+  trim(38,.22,.55,0,10.75,z,plaster);
+  for(const x of [-18,-9,0,9,18])trim(.26,.16,4.3,x,10.8,z+2.3,brass);
+}
+for(const x of [-20,20])trim(.45,.35,33,x,10.5,0,brass);
+// Decorative wall paneling and station plaques.
+for(const z of [-12,-6,0,6,12]){
+  for(const side of [-1,1]){
+    trim(.3,1.7,3.8,side*22.1,2.2,z,plaster);
+    trim(.34,.12,4.1,side*21.9,3.2,z,brass);
+    trim(.34,.12,4.1,side*21.9,1.25,z,brass);
+  }
+}
+// Gate portal: layered bronze bands, lintel, luminous departure panels.
+trim(18,.36,1.3,0,10.1,-15.1);
+trim(17,.23,.9,0,8.05,-15.05);
+for(const x of [-9.1,-8.5,8.5,9.1])trim(.22,9.3,.75,x,4.7,-15.05);
+for(const x of [-5.8,-2.9,0,2.9,5.8]){
+  trim(.09,6.2,.12,x,3.15,-14.9,brass);
+  sphere(.14,warm,x,6.55,-14.76);
+}
+// Ticket booth glazing, warm practical lamps and counter detailing.
+trim(6.7,2.2,.12,-14,5.45,-3.5,glass);
+for(const x of [-16.2,-14,-11.8])trim(.11,2.25,.2,x,5.4,-3.35);
+trim(7.4,.2,.55,-14,4.25,-3.05);
+for(const x of [-16,-12]){sphere(.22,warm,x,4.7,-3);const l=new THREE.PointLight(0xffb765,4,8);l.position.set(x,4.7,-3);scene.add(l)}
+// A proper waiting area with benches, suitcases, floor inlays and scattered paper.
+for(const x of [-13.5,13.5]){
+  for(const z of [5,10]){
+    trim(4,.22,1.05,x,.8,z,wood);
+    trim(4,1.15,.18,x,1.45,z-.52,wood);
+    for(const dx of [-1.6,1.6])trim(.2,.7,.8,x+dx,.38,z,brass);
+  }
+}
+for(let x=-19;x<=19;x+=4){
+  trim(2.6,.018,.08,x,-.044,-12,brass);
+  trim(2.6,.018,.08,x,-.044,14,brass);
+}
+for(let z=-14;z<=14;z+=4){
+  trim(.08,.018,2.5,-19,-.044,z,brass);
+  trim(.08,.018,2.5,19,-.044,z,brass);
+}
+// Hanging station lamps: visible silhouettes and warm pools of light.
+for(const x of [-8,0,8]){
+  for(const z of [-9,2]){
+    cyl(.035,.035,1.4,brass,x,10.25,z);
+    cyl(.68,.32,.45,deep,x,9.38,z);
+    sphere(.27,warm,x,9.08,z);
+    const l=new THREE.PointLight(0xffbb70,5,11);l.position.set(x,8.9,z);scene.add(l);
+  }
+}
+// Layered train platform visible beyond the gate.
+trim(17,.25,8,0,-.1,-21,plaster);
+for(const x of [-5.7,5.7]){
+  cyl(.67,.67,.65,deep,x,.15,-22);
+  cyl(.43,.43,.65,brass,x,.15,-22.1);
+}
+for(const x of [-4,0,4])trim(2.6,.09,.13,x,2.7,-21.12,brass);
+// Dust motes: restrained luminous particles that reinforce depth.
+const dustGeo=new THREE.BufferGeometry(),dustPos=[];
+for(let i=0;i<170;i++){
+  const a=i*2.399963,b=(i*73)%167/167;
+  dustPos.push(Math.sin(a)*20*b,1+((i*37)%97)/97*9,-15+((i*59)%137)/137*29);
+}
+dustGeo.setAttribute('position',new THREE.Float32BufferAttribute(dustPos,3));
+const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xf6cf91,size:.035,transparent:true,opacity:.48,depthWrite:false}));
+scene.add(dust);
+scene.fog.density=.003;
+renderer.toneMappingExposure=1.85;
+
 // Character model made from actual 3D geometry
 function skeleton(x,z,coat,hat=false,scale=1,noir=false){
  const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);scene.add(g);
@@ -84,7 +179,7 @@ const ray=new THREE.Raycaster(),mouse=new THREE.Vector2(),ground=new THREE.Plane
 function talk(who,words,choices=[['Continue',close]]){let d=document.getElementById('dialog');d.style.display='block';document.getElementById('hint').style.display='none';document.getElementById('speaker').textContent=who;document.getElementById('words').textContent=words;let el=document.getElementById('choices');el.replaceChildren();choices.forEach(([txt,fn])=>{let b=document.createElement('button');b.textContent=txt;b.onclick=fn;el.append(b)})}function close(){document.getElementById('dialog').style.display='none';document.getElementById('hint').style.display='block'}let toastTimer;function toast(t){let d=document.getElementById('toast');d.textContent=t;d.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>d.style.display='none',3100)}function refreshInventory(){document.getElementById('items').textContent=keyFound?'🗝 Brass winding key':'Empty'}document.getElementById('inventory').onclick=()=>{let d=document.getElementById('inv');d.style.display=d.style.display==='block'?'none':'block'};document.getElementById('camera').onclick=()=>{angle=(angle+1)%angles.length;toast(['Cinematic follow','Right cinematic','Left cinematic'][angle])};
 let last=performance.now();function animate(t){requestAnimationFrame(animate);let dt=Math.min(.05,(t-last)/1000);last=t;const dx=destination.x-vincent.position.x,dz=destination.z-vincent.position.z,dist=Math.hypot(dx,dz);if(dist>.12){const step=Math.min(dist,dt*4.5);vincent.position.x+=dx/dist*step;vincent.position.z+=dz/dist*step;vincent.rotation.y=Math.atan2(dx,dz);walkTime+=dt*10;vincent.position.y=Math.abs(Math.sin(walkTime))*.055;const l=vincent.userData.limbs;if(l){l.legs[0].rotation.x=Math.sin(walkTime)*.52;l.legs[1].rotation.x=-Math.sin(walkTime)*.52;l.arms[0].rotation.x=-Math.sin(walkTime)*.4;l.arms[1].rotation.x=Math.sin(walkTime)*.4;l.head.rotation.z=Math.sin(walkTime*.5)*.025;}}else{vincent.position.y=0;const l=vincent.userData.limbs;if(l){for(const part of [...l.legs,...l.arms])part.rotation.x*=Math.max(0,1-dt*8);l.head.rotation.z=Math.sin(t*.001)*.035;}if(pending){let f=pending;pending=null;f()}}if(vincent.userData.smoke)vincent.userData.smoke.forEach((p,i)=>{p.position.y=.02+i*.16+Math.sin(t*.0018+i)*.045;p.scale.setScalar(1+Math.sin(t*.001+i)*.12)});const a=angles[angle];const forward=new THREE.Vector3(Math.sin(vincent.rotation.y),0,Math.cos(vincent.rotation.y));
 // Cinematic third-person framing: Vincent stays large in the foreground while the hall remains visible.
-const focus=new THREE.Vector3(vincent.position.x,2.05,vincent.position.z-2.6);
-const desired=new THREE.Vector3(vincent.position.x+a[0],a[1],vincent.position.z+a[2]);
-camera.position.lerp(desired,Math.min(1,dt*2.8));cameraTarget.lerp(focus,Math.min(1,dt*3.5));camera.lookAt(cameraTarget);renderer.render(scene,camera)}window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});camera.position.set(vincent.position.x+angles[0][0],angles[0][1],vincent.position.z+angles[0][2]);cameraTarget.set(vincent.position.x,2.05,vincent.position.z-2.6);document.getElementById('loading').remove();requestAnimationFrame(animate);setTimeout(()=>talk('VINCENT VALE','A station without a schedule. A train seventy years late. And a clock that refuses to move. Just another ordinary Tuesday.',[['Find the 12:07 train',close]]),600);
+const focus=new THREE.Vector3(vincent.position.x,2.05,vincent.position.z-5.5);
+const desired=new THREE.Vector3(vincent.position.x+a[0],a[1],Math.min(14.2,vincent.position.z+a[2]));
+camera.position.lerp(desired,Math.min(1,dt*2.8));cameraTarget.lerp(focus,Math.min(1,dt*3.5));camera.lookAt(cameraTarget);renderer.render(scene,camera)}window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});camera.position.set(vincent.position.x+angles[0][0],angles[0][1],Math.min(14.2,vincent.position.z+angles[0][2]));cameraTarget.set(vincent.position.x,2.05,vincent.position.z-5.5);document.getElementById('loading').remove();requestAnimationFrame(animate);setTimeout(()=>talk('VINCENT VALE','A station without a schedule. A train seventy years late. And a clock that refuses to move. Just another ordinary Tuesday.',[['Find the 12:07 train',close]]),600);
 </script></body></html>
